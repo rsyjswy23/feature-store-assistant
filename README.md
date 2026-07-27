@@ -301,7 +301,7 @@ The web interface (`app_web.py`) includes:
 
 # Monitoring
 
-Grafana Dashboard:
+6 Grafana Dashboards:
 <p align="center">
   <img src="images/grafana.jpg" width="800">
 </p>
@@ -315,12 +315,12 @@ Default Login:
 
 The dashboard tracks:
 
-- Response Time Over Time
-- OpenAI Cost
-- Token Usage
-- Relevance Distribution
-- User Feedback Summary
-- Recent Conversations
+- Response Time Over Time: Tracks LLM latency trends to monitor performance degradation over time
+- OpenAI Cost: Monitors API spending over time to help manage budget and detect cost anomalies
+- Token Usage: Shows prompt, completion, and total token usage patterns to optimize prompt efficiency
+- Relevance Distribution: Displays answer quality breakdown from LLM-as-Judge (RELEVANT / PARTLY_RELEVANT / NON_RELEVANT)
+- User Feedback Summary: Shows thumbs up/down ratio from user feedback, providing a direct measure of user satisfaction
+- Recent Conversations: Lists the most recent user interactions with metadata for quick debugging and monitoring
 
 Grafana configuration files:
 
