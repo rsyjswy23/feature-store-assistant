@@ -3,7 +3,7 @@
 A conversational AI application that helps data scientists and ML engineers discover and understand features in an e-commerce feature store, making feature documentation more accessible and discoverable.
 
 **Tech Stack:**
-- **RAG Pipeline**: MinSearch with optimized TF-IDF field boosting (89.8% MRR), query expansion, and tuned chunk size for better retrieval
+- **RAG Pipeline**: MinSearch with optimized TF-IDF field boosting (89.8% MRR), query rewriting and reranking for improved retrieval performance
 - **LLM**: OpenAI GPT-4o-mini for dataset generation, ground truth question creation, answer generation, and LLM-as-Judge relevance evaluation
 - **Offline and online Evaluation**: Offline evaluation using Hit Rate & MRR on ground truth data, plus online LLM-as-Judge for automated relevance scoring (99% RELEVANT)
 - **Web Interface**: Flask with modern responsive UI
@@ -257,13 +257,17 @@ boost = {
 
 ## RAG Flow Evaluation
 
-LLM-as-a-Judge evaluation over **100 sampled questions** using **GPT-4o-mini**.
+LLM-as-a-Judge over 200 sampled questions. Results for gpt-4o-mini:
 
-| Relevance | Percentage |
-|-----------|-----------:|
-| Relevant | **99%** |
-| Partly Relevant | 1% |
-| Non Relevant | 0% |
+- 98% RELEVANT
+- 2% PARTLY_RELEVANT
+- 0 NON_RELEVANT
+
+Also tested gpt-4o:
+
+- 99% RELEVANT
+- 1% PARTLY_RELEVANT
+- 0 NON_RELEVANT
 
 The RAG system consistently produces relevant answers due to high retrieval quality (MRR 89.8%) and well-structured feature metadata.
 
@@ -284,8 +288,8 @@ data/rag-eval-gpt-4o-mini.csv
   <img src="images/architecture.jpg" width="800">
 </p>
 
-# Web Interface
-Flask UI
+# Flask UI
+
 <p align="center">
   <img src="images/flaskUI.jpg" width="800">
 </p>
