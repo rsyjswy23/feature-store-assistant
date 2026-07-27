@@ -11,6 +11,8 @@ A conversational AI application that helps data scientists and ML engineers disc
 - **Monitoring**: Grafana dashboards for response time, token usage, cost, and quality metrics
 - **Containerization**: Docker Compose for seamless deployment
 
+Built as a demo project for [LLM Zoomcamp](https://github.com/DataTalksClub/llm-zoomcamp).
+
 ## Demo Video
 <p align="center">
   <a href="https://youtu.be/xb20JY70jtA" target="_blank">
@@ -401,10 +403,6 @@ Flask was chosen for its simplicity.
 
 Automated evaluation provides scalable relevance scoring.
 
-**Trade-off**
 
-- Additional API cost and latency.
-
-
-
+## Made with ❤️ for LLM Zoomcamp
 
