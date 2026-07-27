@@ -1,150 +1,443 @@
-# feature-store-assistant
+# Feature Store Assistant
 
-uv add openai python-dotenv pandas numpy scikit-learn tqdm minsearch flask psycopg2-binary pydantic jupyter
+A conversational AI application that helps data scientists and ML engineers discover and understand features in an e-commerce feature store, making feature documentation more accessible and discoverable.
 
-## Retrieval Evaluation
+**Tech Stack:**
+- **RAG Pipeline**: MinSearch with optimized TF-IDF field boosting (89.8% MRR), query expansion, and tuned chunk size for better retrieval
+- **LLM**: OpenAI GPT-4o-mini for answer generation
+- **Evaluation**: LLM-as-Judge for automated relevance scoring (99% RELEVANT)
+- **Web Interface**: Flask with modern responsive UI
+- **Database**: PostgreSQL for conversation and feedback storage
+- **Monitoring**: Grafana dashboards for response time, token usage, cost, and quality metrics
+- **Containerization**: Docker Compose for seamless deployment
+--
 
-Summary of Your Retrieval Evaluation:
-Metric	Baseline	Optimized	Improvement
-Hit Rate	98.9%	98.9%	0% (already optimal)
-MRR	86.1%	89.8%	+3.7%
+## Demo
+Video walkthrough: https://youtu.be/xb20JY70jtA
 
-Optimized Boost Parameters:
-python
-boost = {
-    'feature_name': 2.07,
-    'feature_group': 0.18,
-    'feature_description': 2.70,
-    'computation_logic': 1.91,
-    'models_using_feature': 1.17,
-    'data_source': 1.30,
-    'serving_store': 0.77,
-    'update_frequency': 0.58,
-}
+--
 
-## RAG Evaluation
-LLM AS A JUDGE: use both models with 200 samples:
+## Problem
+Modern ML platforms often contain hundreds of features with complex computation logic, making it difficult for data scientists to:
 
-gpt-4o-mini:
-relevance
-RELEVANT           0.99
-PARTLY_RELEVANT    0.01
-NON_RELEVANT       0.00
+- Find the right features for their models
+- Understand how features are computed
+- Know which models use specific features
+- Track feature update frequencies and data sources
 
-gpt-4o: 
+The **Feature Store Assistant** is a Retrieval-Augmented Generation (RAG) application that addresses these challenges by providing:
 
+- Feature Discovery – Search features by name, description, or business context.
+- Computation Understanding – Explain how features are calculated.
+- Model Lineage – Identify which models consume specific features.
+- Data Source Tracking – Show where features originate.
+- Update Frequency – Display how often features are refreshed.
+- Conversational Interaction – Answer questions using natural language instead of manual documentation searches.
+-- 
+# Quick Start
 
+The easiest way to run the application is with Docker Compose.
 
-sample questions: 
-3,What is the computation logic behind the avg_order_value_7d feature?
-5,"What data source is used to derive the avg_order_value_30d feature, and what is its status?"
-8,"How is the 'product_views_30d' feature computed, and what is the time frame considered?"
-9,What does the avg_rating_7d feature represent in the context of product quality?
-12,How is the 'search_count_7d' feature calculated for each customer?
-16,What is the return rate over the last 14 days for a specific product?
-19,At what frequency is the inventory stock data updated?
-25,What types of models utilize the click_rate_14d feature in their computations?
-
-"What is the difference between the features 'search_to_purchase_conversion_7d' and 'click_rate_7d' measure for customers?"
-
-
-command 
-uv run jupyter notebook
-
-running the flask application
-uv run python app.py
- 
-you test it with curl
+```bash
+cp .envrc_template .envrc    # Add your OPENAI_API_KEY
+direnv allow                 # Load environment variables
+docker-compose up            # Starts the app, PostgreSQL, and Grafana
 ```
+
+Applications:
+
+- **Web App:** http://localhost:5000
+- **Grafana:** http://localhost:3000
+
+---
+
+# Prerequisites
+
+- Python 3.12+
+- Docker & Docker Compose
+- OpenAI API Key
+- direnv
+- uv
+
+---
+
+# Full Setup
+
+## 1. Install direnv
+
+```bash
+sudo apt install direnv
+direnv hook bash >> ~/.bashrc
+```
+
+## 2. Configure environment variables
+
+```bash
+cp .envrc_template .envrc
+direnv allow
+```
+
+Add your OpenAI API key to `.envrc`.
+
+## 3. Install Python dependencies
+
+```bash
+uv sync
+```
+
+## 4. Start the application
+
+```bash
+docker-compose up -d
+```
+
+## 5. Initialize the PostgreSQL database
+
+```bash
+cd feature_store_assistance
+
+export POSTGRES_HOST=localhost
+
+uv run python db_prep.py
+```
+
+## 6. Initialize Grafana
+
+```bash
+cd grafana
+
+uv run python init.py
+```
+
+## 7. Run the application
+
+```bash
+cd feature_store_assistance
+
+export POSTGRES_HOST=localhost
+
+uv run python app.py
+```
+
+---
+
+# Testing
+
+## Run the test script
+
+```bash
+cd feature_store_assistance
+
+uv run python test.py
+```
+---
+
+# API Testing
+
+## Ask a Question
+
+```bash
 URL=http://localhost:5000
-QUESTION="'what features are used for personalized promotion campaigns?'"
+
+QUESTION="what features are used for personalized promotion campaigns?"
+
 curl -X POST \
-    -H "Content-Type: application/json" \
-    -d '{"question": "'${QUESTION}'"}' \
-    ${URL}/question
+  -H "Content-Type: application/json" \
+  -d '{"question": "'"${QUESTION}"'"}' \
+  ${URL}/question
+```
+
+## Submit Feedback
+
+```bash
+ID="65f65c7e-6383-4753-b29f-530ad418e594"
+
+curl -X POST \
+  -H "Content-Type: application/json" \
+  -d '{"conversation_id":"'"${ID}"'","feedback":1}' \
+  ${URL}/feedback
 ```
 
 Example response:
 
 ```json
 {
-  "answer": "The features used for personalized promotion campaigns include:\n\n1. **purchase_count_30d_web** - Monthly purchase count indicator from the web channel.\n2. **purchase_count_14d_web** - Bi-weekly purchase count measurement from the web channel.\n3. **purchase_count_7d_web** - Short-term weekly purchase count metric from the web channel.\n4. **purchase_count_30d_mobile** - Monthly purchase count indicator from the mobile app channel.\n5. **purchase_count_14d_mobile** - Bi-weekly purchase count measurement from the mobile app channel.\n6. **purchase_count_7d_mobile** - Short-term weekly purchase count metric from the mobile app channel.",
-  "conversation_id": "65f65c7e-6383-4753-b29f-530ad418e594",
-  "question": "what features are used for personalized promotion campaigns?"
-}
-```
-
-You can also send feedback:
-## sending feedback to id
-```
-URL=http://localhost:5000
-ID="65f65c7e-6383-4753-b29f-530ad418e594"
-
-curl -X POST \
-    -H "Content-Type: application/json" \
-    -d '{"conversation_id": "'"${ID}"'", "feedback": 1}' \
-    ${URL}/feedback
-```
-you will receive acknowlegement:
-```json
-{
   "message": "Feedback received for conversation 65f65c7e-6383-4753-b29f-530ad418e594: 1"
 }
 ```
+---
 
-alternatively, we can use [test.py](test.py) for testing.
+# Database Testing
+
+## Recent Conversations
+
 ```bash
-uv run python test.py
+docker exec -it feature-store-assistant-postgres-1 \
+psql -U user -d feature_store \
+-c "SELECT id, question, answer, model_used, response_time, relevance, timestamp
+FROM conversations
+ORDER BY timestamp DESC
+LIMIT 10;"
 ```
 
-## running it with Docker
-```base
-docker-compose up
-```
+## Recent Feedback
 
-## preparaing application
-before we can use the app, we need to initiatlize databse.
-we can do it by running [`db_prep.py`]:
 ```bash
-cd feature_store_assistance
-
-init db:
-POSTGRES_HOST=localhost \
-POSTGRES_USER=user \
-POSTGRES_PASSWORD=password \
-POSTGRES_DB=feature_store \
-uv run python db_prep.py
-
-export POSTGRES_HOST=localhost
-uv run python db_prep.py
-
+docker exec -it feature-store-assistant-postgres-1 \
+psql -U user -d feature_store \
+-c "SELECT * FROM feedback
+ORDER BY timestamp DESC
+LIMIT 10;"
 ```
 
+---
 
-now run the app:
-```bash
-POSTGRES_HOST=localhost \
-POSTGRES_USER=user \
-POSTGRES_PASSWORD=password \
-POSTGRES_DB=feature_store \
-uv run python app.py
+# Evaluation
+
+## Retrieval Evaluation
+
+Ground truth dataset contains **72+ generated feature questions**.
+
+| Approach | Hit Rate | MRR |
+|----------|---------:|----:|
+| Baseline (No Boosting) | 98.9% | 86.1% |
+| Optimized (Boosting) | **98.9%** | **89.8%** |
+
+**Improvement:** +3.7% MRR
+
+### Best Boosting Parameters
+
+```python
+boost = {
+    "feature_name": 2.07,
+    "feature_group": 0.18,
+    "feature_description": 2.70,
+    "computation_logic": 1.91,
+    "models_using_feature": 1.17,
+    "data_source": 1.30,
+    "serving_store": 0.77,
+    "update_frequency": 0.58,
+}
+```
+---
+
+## RAG Flow Evaluation
+
+LLM-as-a-Judge evaluation over **100 sampled questions** using **GPT-4o-mini**.
+
+| Relevance | Percentage |
+|-----------|-----------:|
+| Relevant | **99%** |
+| Partly Relevant | 1% |
+| Non Relevant | 0% |
+
+The RAG system consistently produces relevant answers due to high retrieval quality (MRR 89.8%) and well-structured feature metadata.
+
+### Evaluation Notebooks
+
+- `notebooks/rag-test.ipynb`
+- `notebooks/evaluation-data-generation.ipynb`
+
+Evaluation data:
+
+```
+data/rag-eval-gpt-4o-mini.csv
+```
+---
+
+## Architecture
+flowchart TD
+    User["User"]
+    WebUI["Web UI (app_web.py)"]
+    API["Flask API (app.py)"]
+    RAG["RAG module (rag.py)"]
+    Search["minsearch<br/>72+ features, in-memory"]
+    LLM["OpenAI LLM<br/>gpt-4o-mini"]
+    Judge["LLM-as-Judge<br/>Relevance Evaluation"]
+    DB[("PostgreSQL")]
+    Grafana["Grafana dashboard<br/>localhost:3000"]
+
+    User --> WebUI
+    User --> API
+    WebUI --> API
+    API --> RAG
+    RAG --> Search
+    RAG --> LLM
+    RAG --> Judge
+    RAG --> API
+    API --> DB
+    DB --> Grafana
+
+    style Search fill:#1e3a5f,color:#fff
+    style LLM fill:#10a37f,color:#fff
+    style Judge fill:#6b46c1,color:#fff
+    style DB fill:#336791,color:#fff
+    style Grafana fill:#f46800,color:#fff
+
+---
+# Monitoring
+
+Grafana Dashboard:
+<p align="center">
+  <img src="images/grafana.jpg" width="400">
+</p>
+
+**URL:** http://localhost:3000
+
+Default Login:
+
+- Username: `admin`
+- Password: `admin`
+
+The dashboard tracks:
+
+- Response Time Over Time
+- OpenAI Cost
+- Token Usage
+- Relevance Distribution
+- User Feedback Summary
+- Recent Conversations
+
+Grafana configuration files:
+
+```
+grafana/
+├── init.py
+└── dashboard.json
+```
+---
+
+# Web Interface
+Flask UI
+<p align="center">
+  <img src="images/flaskUI.jpg" width="400">
+</p>
+The web interface (`app_web.py`) includes:
+- Large search box
+- Conversational Q&A
+- Response metrics
+- LLM relevance score
+- Judge explanation
+- User feedback buttons
+- Conversation history
+
+---
+
+# Project Structure
+
+```text
+feature_store_assistance/
+├── app.py
+├── app_web.py
+├── rag.py
+├── ingest.py
+├── db.py
+├── db_prep.py
+├── test.py
+│
+├── data/
+│   ├── feature_store_data.csv
+│   ├── ground-truth-retrieval.csv
+│   └── rag-eval-gpt-4o-mini.csv
+│
+├── notebooks/
+│   ├── rag-test.ipynb
+│   └── evaluation-data-generation.ipynb
+│
+├── grafana/
+│   ├── init.py
+│   └── dashboard.json
+│
+├── docker-compose.yaml
+├── Dockerfile
+├── pyproject.toml
+└── README.md
 ```
 
-after that, you can test with test.py 
-```bash
-uv run python test.py
-```
-```json
-question:  How frequently is the payment_success_7d_web feature updated, and how does that impact our decision-making in real-time payment optimizations?
-{'answer': 'The payment_success_7d_web feature is updated hourly. This frequent update allows for real-time assessments of payment success rates, which aids in optimizing payment processes. By having up-to-date information, decision-makers can quickly identify trends, respond to issues as they arise, and implement adjustments to improve payment efficiency and minimize fraud in real-time.', 'conversation_id': '172a9005-cca2-4230-b1de-f6316026fadc', 'question': 'How frequently is the payment_success_7d_web feature updated, and how does that impact our decision-making in real-time payment optimizations?'}
-```
+---
+# Dataset
 
-then you can query database to see if conversation captured correctly:
-```bash
-docker exec -it feature-store-assistant-postgres-1 psql -U user -d feature_store -c "SELECT id, question, answer, model_used, response_time, relevance, timestamp FROM conversations ORDER BY timestamp DESC LIMIT 10;"
-```
+The dataset contains **72+ synthetic e-commerce features** generated with OpenAI.
 
-you can also query feedback after user has provided feedback +1/-1:
-```bash
-docker exec -it feature-store-assistant-postgres-1 psql -U user -d feature_store -c "SELECT * FROM feedback ORDER BY timestamp DESC LIMIT 10;"
-```
+Each feature includes:
+
+| Field | Description |
+|------|-------------|
+| id | Unique feature identifier |
+| feature_name | Feature name |
+| feature_group | Feature category |
+| computation_logic | SQL or pseudocode |
+| data_source | Source table or layer |
+| update_frequency | Refresh frequency |
+| serving_store | Feature serving system |
+| models_using_feature | ML models consuming the feature |
+| feature_description | Business-friendly explanation |
+
+## Feature Groups
+
+- Customer Behavior
+- Customer Spend
+- Product Engagement
+- Product Quality
+- Search Behavior
+- Inventory
+- Logistics
+- Marketing
+- Payment
+
+---
+
+# Design Decisions & Trade-offs
+
+### MinSearch vs Vector Database
+
+The dataset is relatively small (72+ features), so TF-IDF with tuned boosting provides excellent retrieval quality without requiring a vector database.
+
+**Trade-off:** Semantic matching is weaker for heavily paraphrased queries.
+
+---
+
+### GPT-4o-mini vs GPT-4o
+
+Evaluation showed nearly identical answer quality while GPT-4o-mini significantly reduced inference cost.
+
+---
+
+### In-Memory Search Index
+
+The search index is built during application startup.
+
+**Advantages**
+
+- Simple deployment
+- No additional infrastructure
+
+**Trade-off**
+
+- Index rebuild required after every restart.
+
+---
+
+### Flask vs FastAPI
+
+Flask was chosen for its simplicity.
+
+**Trade-off**
+
+- No built-in asynchronous support.
+
+---
+
+### LLM-as-a-Judge
+
+Automated evaluation provides scalable relevance scoring.
+
+**Trade-off**
+
+- Additional API cost and latency.
+
+---
+
+
+
+

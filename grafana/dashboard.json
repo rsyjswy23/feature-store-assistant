@@ -1,0 +1,87 @@
+{
+  "title": "Feature Store Assistant Monitoring",
+  "tags": ["feature-store", "rag", "llm"],
+  "timezone": "browser",
+  "panels": [
+    {
+      "id": 1,
+      "title": "Response Time Over Time",
+      "type": "timeseries",
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0},
+      "targets": [
+        {
+          "refId": "A",
+          "rawSql": "SELECT timestamp AS time, response_time FROM conversations ORDER BY timestamp;",
+          "format": "time_series"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "OpenAI Cost Over Time",
+      "type": "timeseries",
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 0},
+      "targets": [
+        {
+          "refId": "A",
+          "rawSql": "SELECT timestamp AS time, openai_cost FROM conversations ORDER BY timestamp;",
+          "format": "time_series"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Token Usage Over Time",
+      "type": "timeseries",
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 8},
+      "targets": [
+        {
+          "refId": "A",
+          "rawSql": "SELECT timestamp AS time, prompt_tokens, completion_tokens, total_tokens FROM conversations ORDER BY timestamp;",
+          "format": "time_series"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Relevance Distribution",
+      "type": "piechart",
+      "gridPos": {"h": 8, "w": 6, "x": 12, "y": 8},
+      "targets": [
+        {
+          "refId": "A",
+          "rawSql": "SELECT relevance, COUNT(*) as count FROM conversations GROUP BY relevance;",
+          "format": "table"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "User Feedback Summary",
+      "type": "gauge",
+      "gridPos": {"h": 8, "w": 6, "x": 18, "y": 8},
+      "targets": [
+        {
+          "refId": "A",
+          "rawSql": "SELECT \n  SUM(CASE WHEN feedback = 1 THEN 1 ELSE 0 END) as thumbs_up,\n  SUM(CASE WHEN feedback = -1 THEN 1 ELSE 0 END) as thumbs_down\nFROM feedback;",
+          "format": "table"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Recent Conversations",
+      "type": "table",
+      "gridPos": {"h": 8, "w": 24, "x": 0, "y": 16},
+      "targets": [
+        {
+          "refId": "A",
+          "rawSql": "SELECT \n  timestamp, \n  LEFT(question, 100) as question, \n  relevance, \n  response_time,\n  openai_cost\nFROM conversations \nORDER BY timestamp DESC \nLIMIT 10;",
+          "format": "table"
+        }
+      ]
+    }
+  ],
+  "schemaVersion": 16,
+  "version": 1
+}
