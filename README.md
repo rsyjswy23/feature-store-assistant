@@ -13,6 +13,12 @@ A conversational AI application that helps data scientists and ML engineers disc
 --
 
 ## Demo
+
+<p align="center">
+  <a href="https://youtu.be/xb20JY70jtA">
+    <img src="images/flaskUI.jpg" alt="demo">
+  </a>
+</p>
 Video walkthrough: https://youtu.be/xb20JY70jtA
 
 --
@@ -279,7 +285,7 @@ flowchart TD
 
 Grafana Dashboard:
 <p align="center">
-  <img src="images/grafana.jpg" width="400">
+  <img src="images/grafana.jpg" width="800">
 </p>
 
 **URL:** http://localhost:3000
@@ -310,7 +316,7 @@ grafana/
 # Web Interface
 Flask UI
 <p align="center">
-  <img src="images/flaskUI.jpg" width="400">
+  <img src="images/flaskUI.jpg" width="800">
 </p>
 The web interface (`app_web.py`) includes:
 - Large search box
