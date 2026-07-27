@@ -56,30 +56,55 @@ Applications:
 - **Grafana:** http://localhost:3000
 
 
-# Full Setup
-# 1. Install direnv
+## Full Setup
+
+### 1. Install `direnv`
+
+```bash
 sudo apt install direnv
 direnv hook bash >> ~/.bashrc
+```
 
-# 2. Configure environment
+### 2. Configure the Environment
+
+```bash
 cp .envrc_template .envrc
 direnv allow
+```
 
-# 3. Install dependencies
+### 3. Install Dependencies
+
+```bash
 uv sync
+```
 
-# 3.5 (Optional) Install minsearch if not found
+### 4. (Optional) Install MinSearch
+
+If `minsearch` is not found, install it manually:
+
+```bash
 uv add git+https://github.com/alexeygrigorev/minsearch.git
+```
 
-# 4. Start services
+### 5. Start the Services
+
+```bash
 docker-compose up -d
+```
 
-# 5. Initialize database
+### 6. Initialize the Database
+
+```bash
 cd feature_store_assistance
 export POSTGRES_HOST=localhost
 uv run python db_prep.py
+```
 
-# 6. Run the web app
+### 7. Run the Web Application
+
+```bash
+cd feature_store_assistance
+export POSTGRES_HOST=localhost
 uv run python app_web.py
 ```
 
