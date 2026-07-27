@@ -50,10 +50,12 @@ The **Feature Store Assistant** is a Retrieval-Augmented Generation (RAG) applic
 - direnv
 - uv
 
-Applications:
+## Access the Application
 
-- **Web App:** http://localhost:5000
-- **Grafana:** http://localhost:3000
+| Service | URL |
+|---------|-----|
+| **Flask Web UI** | http://localhost:5000 |
+| **Grafana Dashboard** | http://localhost:3000 (admin/admin) |
 
 
 ## Full Setup
