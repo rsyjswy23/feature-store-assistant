@@ -1,2 +1,77 @@
 .env
 .envrc
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+.venv/
+venv/
+ENV/
+env/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Environment variables
+.env
+.envrc
+.env.local
+.env.*.local
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Logs
+*.log
+logs/
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+*.ipynb
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# Distribution
+dist/
+build/
+*.egg-info/
+*.egg
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Grafana data (if mounted locally)
+grafana/data/
+
+# uv lock file (keep this - optional)
+# uv.lock is usually committed, so keep it
+
+# Docker volumes (if mounted locally)
+*.pid
+
+# MyPy type checker
+.mypy_cache/
+
+# Pyre type checker
+.pyre/
+
+# PDM
+.pdm.toml
+.pdm-python
+__pypackages__/
+
+# Ruff cache
+.ruff_cache/
