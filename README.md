@@ -96,3 +96,55 @@ alternatively, we can use [test.py](test.py) for testing.
 ```bash
 uv run python test.py
 ```
+
+## running it with Docker
+```base
+docker-compose up
+```
+
+## preparaing application
+before we can use the app, we need to initiatlize databse.
+we can do it by running [`db_prep.py`]:
+```bash
+cd feature_store_assistance
+
+init db:
+POSTGRES_HOST=localhost \
+POSTGRES_USER=user \
+POSTGRES_PASSWORD=password \
+POSTGRES_DB=feature_store \
+uv run python db_prep.py
+
+export POSTGRES_HOST=localhost
+uv run python db_prep.py
+
+```
+
+
+now run the app:
+```bash
+POSTGRES_HOST=localhost \
+POSTGRES_USER=user \
+POSTGRES_PASSWORD=password \
+POSTGRES_DB=feature_store \
+uv run python app.py
+```
+
+after that, you can test with test.py 
+```bash
+uv run python test.py
+```
+```json
+question:  How frequently is the payment_success_7d_web feature updated, and how does that impact our decision-making in real-time payment optimizations?
+{'answer': 'The payment_success_7d_web feature is updated hourly. This frequent update allows for real-time assessments of payment success rates, which aids in optimizing payment processes. By having up-to-date information, decision-makers can quickly identify trends, respond to issues as they arise, and implement adjustments to improve payment efficiency and minimize fraud in real-time.', 'conversation_id': '172a9005-cca2-4230-b1de-f6316026fadc', 'question': 'How frequently is the payment_success_7d_web feature updated, and how does that impact our decision-making in real-time payment optimizations?'}
+```
+
+then you can query database to see if conversation captured correctly:
+```bash
+docker exec -it feature-store-assistant-postgres-1 psql -U user -d feature_store -c "SELECT id, question, answer, model_used, response_time, relevance, timestamp FROM conversations ORDER BY timestamp DESC LIMIT 10;"
+```
+
+you can also query feedback after user has provided feedback +1/-1:
+```bash
+docker exec -it feature-store-assistant-postgres-1 psql -U user -d feature_store -c "SELECT * FROM feedback ORDER BY timestamp DESC LIMIT 10;"
+```
