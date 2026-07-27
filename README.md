@@ -4,8 +4,8 @@ A conversational AI application that helps data scientists and ML engineers disc
 
 **Tech Stack:**
 - **RAG Pipeline**: MinSearch with optimized TF-IDF field boosting (89.8% MRR), query expansion, and tuned chunk size for better retrieval
-- **LLM**: OpenAI GPT-4o-mini for answer generation
-- **Evaluation**: Offline evaluation using Hit Rate & MRR on ground truth data, plus online LLM-as-Judge for automated relevance scoring (99% RELEVANT)
+- **LLM**: OpenAI GPT-4o-mini for dataset generation, ground truth question creation, answer generation, and LLM-as-Judge relevance evaluation
+- **Offline and online Evaluation**: Offline evaluation using Hit Rate & MRR on ground truth data, plus online LLM-as-Judge for automated relevance scoring (99% RELEVANT)
 - **Web Interface**: Flask with modern responsive UI
 - **Database**: PostgreSQL for conversation and feedback storage
 - **Monitoring**: Grafana dashboards for response time, token usage, cost, and quality metrics
@@ -42,21 +42,6 @@ The **Feature Store Assistant** is a Retrieval-Augmented Generation (RAG) applic
 - Update Frequency – Display how often features are refreshed.
 - Conversational Interaction – Answer questions using natural language instead of manual documentation searches.
 
-# Quick Start
-
-The easiest way to run the application is with Docker Compose.
-
-```bash
-cp .envrc_template .envrc    # Add your OPENAI_API_KEY
-direnv allow                 # Load environment variables
-docker-compose up            # Starts the app, PostgreSQL, and Grafana
-```
-
-Applications:
-
-- **Web App:** http://localhost:5000
-- **Grafana:** http://localhost:3000
-
 # Prerequisites
 
 - Python 3.12+
@@ -65,64 +50,38 @@ Applications:
 - direnv
 - uv
 
+Applications:
+
+- **Web App:** http://localhost:5000
+- **Grafana:** http://localhost:3000
+
+
 # Full Setup
-
-## 1. Install direnv
-
-```bash
+# 1. Install direnv
 sudo apt install direnv
 direnv hook bash >> ~/.bashrc
-```
 
-## 2. Configure environment variables
-
-```bash
+# 2. Configure environment
 cp .envrc_template .envrc
 direnv allow
-```
 
-Add your OpenAI API key to `.envrc`.
-
-## 3. Install Python dependencies
-
-```bash
+# 3. Install dependencies
 uv sync
-```
 
-## 4. Start the application
+# 3.5 (Optional) Install minsearch if not found
+uv add git+https://github.com/alexeygrigorev/minsearch.git
 
-```bash
+# 4. Start services
 docker-compose up -d
-```
 
-## 5. Initialize the PostgreSQL database
-
-```bash
+# 5. Initialize database
 cd feature_store_assistance
-
 export POSTGRES_HOST=localhost
-
 uv run python db_prep.py
+
+# 6. Run the web app
+uv run python app_web.py
 ```
-
-## 6. Initialize Grafana
-
-```bash
-cd grafana
-
-uv run python init.py
-```
-
-## 7. Run the application
-
-```bash
-cd feature_store_assistance
-
-export POSTGRES_HOST=localhost
-
-uv run python app.py
-```
-
 
 # Testing
 
@@ -250,6 +209,20 @@ data/rag-eval-gpt-4o-mini.csv
   <img src="images/architecture.jpg" width="800">
 </p>
 
+# Web Interface
+Flask UI
+<p align="center">
+  <img src="images/flaskUI.jpg" width="800">
+</p>
+
+The web interface (`app_web.py`) includes:
+- Large search box
+- Conversational Q&A
+- Response metrics
+- LLM relevance score
+- Judge explanation
+- User feedback buttons
+- Conversation history
 
 # Monitoring
 
@@ -281,22 +254,6 @@ grafana/
 ├── init.py
 └── dashboard.json
 ```
-
-# Web Interface
-Flask UI
-<p align="center">
-  <img src="images/flaskUI.jpg" width="800">
-</p>
-The web interface (`app_web.py`) includes:
-- Large search box
-- Conversational Q&A
-- Response metrics
-- LLM relevance score
-- Judge explanation
-- User feedback buttons
-- Conversation history
-
-
 
 # Project Structure
 

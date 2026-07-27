@@ -1,4 +1,4 @@
-[project]
+[[project]
 name = "feature-store-assistant"
 version = "0.1.0"
 description = "Add your description here"
@@ -16,6 +16,7 @@ dependencies = [
     "psycopg2-binary>=2.9.12",
     "pydantic>=2.13.4",
     "python-dotenv>=1.2.2",
+    "requests>=2.31.0",
     "scikit-learn>=1.9.0",
     "tqdm>=4.69.0",
 ]
