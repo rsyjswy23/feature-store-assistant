@@ -60,6 +60,8 @@ The **Feature Store Assistant** is a Retrieval-Augmented Generation (RAG) applic
 
 ## Full Setup
 
+## Full Setup
+
 ### 1. Install `direnv`
 
 ```bash
@@ -67,12 +69,18 @@ sudo apt install direnv
 direnv hook bash >> ~/.bashrc
 ```
 
+---
+
 ### 2. Configure the Environment
+
+Copy the environment template and add your OpenAI API key.
 
 ```bash
 cp .envrc_template .envrc
 direnv allow
 ```
+
+---
 
 ### 3. Install Dependencies
 
@@ -80,35 +88,94 @@ direnv allow
 uv sync
 ```
 
+---
+
 ### 4. (Optional) Install MinSearch
 
-If `minsearch` is not found, install it manually:
+If `minsearch` is not installed, install it manually.
 
 ```bash
 uv add git+https://github.com/alexeygrigorev/minsearch.git
 ```
 
+---
+
 ### 5. Start the Services
+
+Start the application dependencies using Docker Compose.
 
 ```bash
 docker-compose up -d
 ```
 
+---
+
 ### 6. Initialize the Database
 
 ```bash
 cd feature_store_assistance
+
 export POSTGRES_HOST=localhost
+
 uv run python db_prep.py
 ```
+
+---
 
 ### 7. Run the Web Application
 
 ```bash
 cd feature_store_assistance
+
 export POSTGRES_HOST=localhost
+
 uv run python app_web.py
 ```
+
+The application will be available at:
+
+- **Web UI:** http://localhost:5000
+
+---
+
+## 8. Set Up Grafana
+
+### 8.1 Add the PostgreSQL Data Source
+
+1. Open **http://localhost:3000**
+2. Log in using:
+   - **Username:** `admin`
+   - **Password:** `admin`
+3. Navigate to **Configuration → Data Sources → Add data source**
+4. Select **PostgreSQL**
+5. Configure the connection using the following settings:
+
+| Setting | Value |
+|---------|-------|
+| **Name** | PostgreSQL |
+| **Host** | `postgres:5432` *(or use the PostgreSQL container IP address)* |
+| **Database** | `feature_store` |
+| **User** | `user` |
+| **Password** | `password` |
+| **SSL Mode** | `disable` |
+
+---
+
+### 8.2 Import the Grafana Dashboard
+
+```bash
+cd grafana
+uv run python init.py
+```
+
+After importing, open **http://localhost:3000** to view the dashboard, which includes:
+
+- 📈 Response Time
+- 💰 OpenAI API Cost
+- 🔢 Token Usage
+- ✅ LLM Relevance Score
+- 👍 User Feedback
+- 💬 Recent Conversations
 
 # Testing
 
