@@ -10,7 +10,6 @@ A conversational AI application that helps data scientists and ML engineers disc
 - **Database**: PostgreSQL for conversation and feedback storage
 - **Monitoring**: Grafana dashboards for response time, token usage, cost, and quality metrics
 - **Containerization**: Docker Compose for seamless deployment
---
 
 ## Demo Video
 <p align="center">
@@ -22,7 +21,7 @@ A conversational AI application that helps data scientists and ML engineers disc
 <p align="center">
   <b> Click the image above to watch the demo video</b>
 </p>
---
+
 
 ## Problem
 Modern ML platforms often contain hundreds of features with complex computation logic, making it difficult for data scientists to:
@@ -40,7 +39,7 @@ The **Feature Store Assistant** is a Retrieval-Augmented Generation (RAG) applic
 - Data Source Tracking – Show where features originate.
 - Update Frequency – Display how often features are refreshed.
 - Conversational Interaction – Answer questions using natural language instead of manual documentation searches.
--- 
+
 # Quick Start
 
 The easiest way to run the application is with Docker Compose.
@@ -56,8 +55,6 @@ Applications:
 - **Web App:** http://localhost:5000
 - **Grafana:** http://localhost:3000
 
---
-
 # Prerequisites
 
 - Python 3.12+
@@ -65,8 +62,6 @@ Applications:
 - OpenAI API Key
 - direnv
 - uv
-
---
 
 # Full Setup
 
@@ -125,7 +120,7 @@ export POSTGRES_HOST=localhost
 
 uv run python app.py
 ```
---
+
 
 # Testing
 
@@ -194,7 +189,6 @@ ORDER BY timestamp DESC
 LIMIT 10;"
 ```
 
---
 
 # Evaluation
 
@@ -223,7 +217,7 @@ boost = {
     "update_frequency": 0.58,
 }
 ```
---
+
 
 ## RAG Flow Evaluation
 
@@ -247,14 +241,14 @@ Evaluation data:
 ```
 data/rag-eval-gpt-4o-mini.csv
 ```
---
+
 
 ## Architecture
 <p align="center">
   <img src="images/architecture.jpg" width="800">
 </p>
 
----
+
 # Monitoring
 
 Grafana Dashboard:
@@ -285,7 +279,6 @@ grafana/
 ├── init.py
 └── dashboard.json
 ```
---
 
 # Web Interface
 Flask UI
@@ -301,7 +294,7 @@ The web interface (`app_web.py`) includes:
 - User feedback buttons
 - Conversation history
 
---
+
 
 # Project Structure
 
@@ -334,7 +327,7 @@ feature_store_assistance/
 └── README.md
 ```
 
---
+
 # Dataset
 
 The dataset contains **72+ synthetic e-commerce features** generated with OpenAI.
@@ -365,7 +358,6 @@ Each feature includes:
 - Marketing
 - Payment
 
---
 
 # Design Decisions & Trade-offs
 
@@ -375,13 +367,12 @@ The dataset is relatively small (72+ features), so TF-IDF with tuned boosting pr
 
 **Trade-off:** Semantic matching is weaker for heavily paraphrased queries.
 
----
+
 
 ### GPT-4o-mini vs GPT-4o
 
 Evaluation showed nearly identical answer quality while GPT-4o-mini significantly reduced inference cost.
 
---
 
 ### In-Memory Search Index
 
@@ -396,7 +387,6 @@ The search index is built during application startup.
 
 - Index rebuild required after every restart.
 
---
 
 ### Flask vs FastAPI
 
@@ -406,7 +396,6 @@ Flask was chosen for its simplicity.
 
 - No built-in asynchronous support.
 
---
 
 ### LLM-as-a-Judge
 
@@ -416,7 +405,6 @@ Automated evaluation provides scalable relevance scoring.
 
 - Additional API cost and latency.
 
---
 
 
 
