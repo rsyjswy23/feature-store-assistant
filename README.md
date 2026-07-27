@@ -5,21 +5,23 @@ A conversational AI application that helps data scientists and ML engineers disc
 **Tech Stack:**
 - **RAG Pipeline**: MinSearch with optimized TF-IDF field boosting (89.8% MRR), query expansion, and tuned chunk size for better retrieval
 - **LLM**: OpenAI GPT-4o-mini for answer generation
-- **Evaluation**: LLM-as-Judge for automated relevance scoring (99% RELEVANT)
+- **Evaluation**: Offline evaluation using Hit Rate & MRR on ground truth data, plus online LLM-as-Judge for automated relevance scoring (99% RELEVANT)
 - **Web Interface**: Flask with modern responsive UI
 - **Database**: PostgreSQL for conversation and feedback storage
 - **Monitoring**: Grafana dashboards for response time, token usage, cost, and quality metrics
 - **Containerization**: Docker Compose for seamless deployment
 --
 
-## Demo
-
+## Demo Video
 <p align="center">
-  <a href="https://youtu.be/xb20JY70jtA">
-    <img src="images/flaskUI.jpg" alt="demo">
+  <a href="https://youtu.be/xb20JY70jtA" target="_blank">
+    <img src="images/flaskUI.jpg" alt="Feature Store Assistant Demo" width="600">
   </a>
 </p>
-Video walkthrough: https://youtu.be/xb20JY70jtA
+
+<p align="center">
+  <b> Click the image above to watch the demo video</b>
+</p>
 
 --
 
@@ -252,33 +254,9 @@ data/rag-eval-gpt-4o-mini.csv
 ---
 
 ## Architecture
-flowchart TD
-    User["User"]
-    WebUI["Web UI (app_web.py)"]
-    API["Flask API (app.py)"]
-    RAG["RAG module (rag.py)"]
-    Search["minsearch<br/>72+ features, in-memory"]
-    LLM["OpenAI LLM<br/>gpt-4o-mini"]
-    Judge["LLM-as-Judge<br/>Relevance Evaluation"]
-    DB[("PostgreSQL")]
-    Grafana["Grafana dashboard<br/>localhost:3000"]
-
-    User --> WebUI
-    User --> API
-    WebUI --> API
-    API --> RAG
-    RAG --> Search
-    RAG --> LLM
-    RAG --> Judge
-    RAG --> API
-    API --> DB
-    DB --> Grafana
-
-    style Search fill:#1e3a5f,color:#fff
-    style LLM fill:#10a37f,color:#fff
-    style Judge fill:#6b46c1,color:#fff
-    style DB fill:#336791,color:#fff
-    style Grafana fill:#f46800,color:#fff
+<p align="center">
+  <img src="images/architecture.jpg" width="800">
+</p>
 
 ---
 # Monitoring
