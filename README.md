@@ -47,3 +47,52 @@ sample questions:
 
 "What is the difference between the features 'search_to_purchase_conversion_7d' and 'click_rate_7d' measure for customers?"
 
+
+command 
+uv run jupyter notebook
+
+running the flask application
+uv run python app.py
+ 
+you test it with curl
+```
+URL=http://localhost:5000
+QUESTION="'what features are used for personalized promotion campaigns?'"
+curl -X POST \
+    -H "Content-Type: application/json" \
+    -d '{"question": "'${QUESTION}'"}' \
+    ${URL}/question
+```
+
+Example response:
+
+```json
+{
+  "answer": "The features used for personalized promotion campaigns include:\n\n1. **purchase_count_30d_web** - Monthly purchase count indicator from the web channel.\n2. **purchase_count_14d_web** - Bi-weekly purchase count measurement from the web channel.\n3. **purchase_count_7d_web** - Short-term weekly purchase count metric from the web channel.\n4. **purchase_count_30d_mobile** - Monthly purchase count indicator from the mobile app channel.\n5. **purchase_count_14d_mobile** - Bi-weekly purchase count measurement from the mobile app channel.\n6. **purchase_count_7d_mobile** - Short-term weekly purchase count metric from the mobile app channel.",
+  "conversation_id": "65f65c7e-6383-4753-b29f-530ad418e594",
+  "question": "what features are used for personalized promotion campaigns?"
+}
+```
+
+You can also send feedback:
+## sending feedback to id
+```
+URL=http://localhost:5000
+ID="65f65c7e-6383-4753-b29f-530ad418e594"
+
+curl -X POST \
+    -H "Content-Type: application/json" \
+    -d '{"conversation_id": "'"${ID}"'", "feedback": 1}' \
+    ${URL}/feedback
+```
+you will receive acknowlegement:
+```json
+{
+  "message": "Feedback received for conversation 65f65c7e-6383-4753-b29f-530ad418e594: 1"
+}
+```
+
+alternatively, we can use [test.py](test.py) for testing.
+```bash
+uv run python test.py
+```
