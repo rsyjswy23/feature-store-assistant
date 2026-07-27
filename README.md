@@ -22,7 +22,6 @@ A conversational AI application that helps data scientists and ML engineers disc
 <p align="center">
   <b> Click the image above to watch the demo video</b>
 </p>
-
 --
 
 ## Problem
@@ -57,7 +56,7 @@ Applications:
 - **Web App:** http://localhost:5000
 - **Grafana:** http://localhost:3000
 
----
+--
 
 # Prerequisites
 
@@ -67,7 +66,7 @@ Applications:
 - direnv
 - uv
 
----
+--
 
 # Full Setup
 
@@ -126,8 +125,7 @@ export POSTGRES_HOST=localhost
 
 uv run python app.py
 ```
-
----
+--
 
 # Testing
 
@@ -138,7 +136,6 @@ cd feature_store_assistance
 
 uv run python test.py
 ```
----
 
 # API Testing
 
@@ -173,7 +170,6 @@ Example response:
   "message": "Feedback received for conversation 65f65c7e-6383-4753-b29f-530ad418e594: 1"
 }
 ```
----
 
 # Database Testing
 
@@ -198,7 +194,7 @@ ORDER BY timestamp DESC
 LIMIT 10;"
 ```
 
----
+--
 
 # Evaluation
 
@@ -227,7 +223,7 @@ boost = {
     "update_frequency": 0.58,
 }
 ```
----
+--
 
 ## RAG Flow Evaluation
 
@@ -251,7 +247,7 @@ Evaluation data:
 ```
 data/rag-eval-gpt-4o-mini.csv
 ```
----
+--
 
 ## Architecture
 <p align="center">
@@ -289,7 +285,7 @@ grafana/
 ├── init.py
 └── dashboard.json
 ```
----
+--
 
 # Web Interface
 Flask UI
@@ -305,7 +301,7 @@ The web interface (`app_web.py`) includes:
 - User feedback buttons
 - Conversation history
 
----
+--
 
 # Project Structure
 
@@ -338,7 +334,7 @@ feature_store_assistance/
 └── README.md
 ```
 
----
+--
 # Dataset
 
 The dataset contains **72+ synthetic e-commerce features** generated with OpenAI.
@@ -369,7 +365,7 @@ Each feature includes:
 - Marketing
 - Payment
 
----
+--
 
 # Design Decisions & Trade-offs
 
@@ -385,7 +381,7 @@ The dataset is relatively small (72+ features), so TF-IDF with tuned boosting pr
 
 Evaluation showed nearly identical answer quality while GPT-4o-mini significantly reduced inference cost.
 
----
+--
 
 ### In-Memory Search Index
 
@@ -400,7 +396,7 @@ The search index is built during application startup.
 
 - Index rebuild required after every restart.
 
----
+--
 
 ### Flask vs FastAPI
 
@@ -410,7 +406,7 @@ Flask was chosen for its simplicity.
 
 - No built-in asynchronous support.
 
----
+--
 
 ### LLM-as-a-Judge
 
@@ -420,8 +416,7 @@ Automated evaluation provides scalable relevance scoring.
 
 - Additional API cost and latency.
 
----
-
+--
 
 
 
