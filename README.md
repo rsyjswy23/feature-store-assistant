@@ -13,10 +13,11 @@ A conversational AI application that helps data scientists and ML engineers disc
 
 Built as a demo project for [LLM Zoomcamp](https://github.com/DataTalksClub/llm-zoomcamp).
 
-## Demo Video
+## Demo Video (Click the image to watch the demo video)
+
 <p align="center">
   <a href="https://youtu.be/xb20JY70jtA" target="_blank">
-    <img src="images/flaskUI.jpg" alt="Feature Store Assistant Demo" width="600">
+    <img src="images/flaskUI.jpg" alt="Feature Store Assistant Demo" width="400">
   </a>
 </p>
 
