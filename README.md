@@ -26,7 +26,7 @@ Built as a demo project for [LLM Zoomcamp](https://github.com/DataTalksClub/llm-
 </p>
 
 
-## Problem
+## Problem Statement
 Modern ML platforms often contain hundreds of features with complex computation logic, making it difficult for data scientists to:
 
 - Find the right features for their models
@@ -58,8 +58,6 @@ The **Feature Store Assistant** is a Retrieval-Augmented Generation (RAG) applic
 | **Flask Web UI** | http://localhost:5000 |
 | **Grafana Dashboard** | http://localhost:3000 (admin/admin) |
 
-
-## Full Setup
 
 ## Full Setup
 
@@ -231,7 +229,7 @@ LIMIT 10;"
 
 ## Retrieval Evaluation
 
-Ground truth dataset contains **72+ generated feature questions**.
+Ground truth dataset contains **200 generated feature questions**.
 
 | Approach | Hit Rate | MRR |
 |----------|---------:|----:|
