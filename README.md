@@ -1,6 +1,10 @@
 # Feature Store Assistant
 
-A conversational AI application that helps data scientists and ML engineers discover and understand features in an e-commerce feature store, making feature documentation more accessible and discoverable.
+Modern ML platforms drown data scientists in hundreds of feature definitions, making it nearly impossible to find the right features, understand computation logic, or track model lineage and data sources.
+
+Feature Store Assistant turns scattered feature metadata into a conversational knowledge base with a chat interface, enabling natural-language discovery of 70+ ML features through hybrid search (keyword + semantic vector), Reciprocal Rank Fusion, query rewriting, and reranking—achieving 89% MRR and 98% Hit Rate on offline evaluation.
+
+The system includes offline/online evaluation pipelines (LLM-as-Judge at 99% relevant, user feedback), LLMOps monitoring with OpenTelemetry, PostgreSQL, Grafana, and Docker, plus optimized context selection to minimize inference costs while maintaining retrieval quality.
 
 **Tech Stack:**
 - **RAG Pipeline**: MinSearch with optimized TF-IDF field boosting (89.8% MRR), query rewriting and reranking for improved retrieval performance
