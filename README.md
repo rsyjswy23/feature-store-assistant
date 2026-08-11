@@ -15,7 +15,7 @@ The system includes offline/online evaluation pipelines (LLM-as-Judge at 99% rel
 - **Monitoring**: Grafana dashboards for response time, token usage, cost, and quality metrics
 - **Containerization**: Docker Compose for seamless deployment
 
-Built as a capstone project for [LLM Zoomcamp](https://github.com/DataTalksClub/llm-zoomcamp).
+Built as the capstone project for [LLM Zoomcamp](https://github.com/DataTalksClub/llm-zoomcamp).
 
 ## Demo Video (Click the image to watch the demo video)
 
