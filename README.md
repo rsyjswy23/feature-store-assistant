@@ -17,7 +17,7 @@ The system includes offline/online evaluation pipelines (LLM-as-Judge at 99% rel
 
 Built as the capstone project for [LLM Zoomcamp](https://github.com/DataTalksClub/llm-zoomcamp).
 
-## Demo Video (Click the image to watch the demo video) [![Watch the video](https://img.youtube.com/vi/xb20JY70jtA/maxresdefault.jpg)](https://youtu.be/xb20JY70jtA)
+## Demo Video (Click the image to watch the demo video)
 
 <p align="center">
   <a href="https://youtu.be/xb20JY70jtA" target="_blank">
